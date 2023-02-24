@@ -4,7 +4,7 @@
 /**
  * @brief Enable memory mapped mode
  *
- * @return int
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::mmap()
 {
@@ -25,11 +25,11 @@ int w25q64jv::mmap()
 /**
  * @brief restart the flash chip as well as enable its qio
  *
- * @return int
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::init()
 {
-    auto res = restart_chip();
+    auto res = restart();
     if (res != 0)
     {
         return res;
@@ -40,11 +40,12 @@ int w25q64jv::init()
 
 /**
  * @brief
- *
- * @param dest
- * @param size
- * @param src
- * @return int
+ * Program individual page, the size have to be bounded by the page size
+ * 
+ * @param dest flash address for program
+ * @param size size of the src buffer, have to be <= page size
+ * @param src buffer for writing
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::program_page(void *dest, const uint32_t size, void *src)
 {
@@ -77,11 +78,11 @@ int w25q64jv::program_page(void *dest, const uint32_t size, void *src)
 
 /**
  * @brief
- *
- * @param dest
- * @param size
- * @param buff
- * @return int
+ * Indirect read given the buffer 
+ * @param dest flash address
+ * @param size buffer size
+ * @param buff buffer for storing
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::read(void *dest, const uint32_t size, void *buff)
 {
@@ -138,11 +139,11 @@ int w25q64jv::verify(void *dest, const uint32_t size, void *src)
 
 /**
  * @brief
- *
- * @param dest
- * @param size
- * @param data
- * @return int
+ * Check if the chip is blank based on data
+ * @param dest 
+ * @param size blank check size
+ * @param data reference blank data to check on
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::blank_check(void *dest, const uint32_t size, uint8_t data)
 {
@@ -175,9 +176,9 @@ int w25q64jv::blank_check(void *dest, const uint32_t size, uint8_t data)
 
 /**
  * @brief
- *
- * @param dest
- * @return int
+ * Erase Individual Sector of the chip
+ * @param dest address that is on sector for erase
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::erase_sector(void *dest)
 {
@@ -210,7 +211,7 @@ int w25q64jv::erase_sector(void *dest)
 /**
  * @brief poll busy bit on the flash
  *
- * @return int
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::poll_busy()
 {
@@ -235,8 +236,8 @@ int w25q64jv::poll_busy()
 
 /**
  * @brief
- *
- * @return int
+ * Erase entire chip
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::erase_chip()
 {
@@ -266,9 +267,9 @@ int w25q64jv::erase_chip()
 }
 
 /**
- * @brief
- *
- * @return int
+ * @brief 
+ * Enable QSPI 
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::enable_qio()
 {
@@ -312,9 +313,9 @@ int w25q64jv::enable_qio()
 }
 
 /**
- * @brief
+ * @brief write enable
  *
- * @return int
+ * @return int return status, 0 if OK , != 0 otherwise
  */
 int w25q64jv::wen()
 {
@@ -357,10 +358,10 @@ int w25q64jv::wen()
 
 /**
  * @brief
- *
- * @return int
+ * Restarting the flash
+ * @return int return status, 0 if OK , != 0 otherwise
  */
-int w25q64jv::restart_chip()
+int w25q64jv::restart()
 {
     /* Enable Reset */
     const qspi_driver::transact_t rst_en = {

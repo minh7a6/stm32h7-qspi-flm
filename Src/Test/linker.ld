@@ -46,6 +46,7 @@ MEMORY
   RAM_D2    (xrw)    : ORIGIN = 0x30000000,   LENGTH = 288K
   RAM_D3    (xrw)    : ORIGIN = 0x38000000,   LENGTH = 64K
   FLASH     (rx)      : ORIGIN = 0x08000000,   LENGTH = 128K
+  QSPI     (rx)      : ORIGIN = 0x90000000,   LENGTH = 128K
 }
 
 /* Sections */
@@ -127,6 +128,12 @@ SECTIONS
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
   } >RAM_D1
+
+  .qspi : {
+    . = ALIGN(4);
+    KEEP(*(external*))
+    . = ALIGN(4);
+  } >QSPI
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :

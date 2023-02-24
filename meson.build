@@ -83,18 +83,18 @@ flm = executable(
             include_directories : [incdirs, 'Src/FLM'] )
 
 
-stldr = executable(
-            'ext_loader_stldr',
-            [srcs, 'Src/STLDR/Loader_Src.cpp', 'Src/STLDR/Dev_Inf.cpp'] ,
-            name_suffix         : 'stldr',
-            c_args              : [c_args_plus ],
-            cpp_args            : [cpp_args_plus ],
-            link_args           : [link_args, '-Wl,-T,@0@/@1@'.format(meson.current_source_dir(), 'Src/STLDR/linker.ld'), 
-                                              '-Wl,-Map=@0@.map,--cref'.format('stldr'),
-                                              '-Wl,--print-memory-usage', 
-                                              '-Wl,--gc-sections'],
-            dependencies        : link_deps,
-            include_directories : [incdirs, 'Src/STLDR'] )
+# stldr = executable(
+#             'ext_loader_stldr',
+#             [srcs, 'Src/STLDR/Loader_Src.cpp', 'Src/STLDR/Dev_Inf.cpp'] ,
+#             name_suffix         : 'stldr',
+#             c_args              : [c_args_plus ],
+#             cpp_args            : [cpp_args_plus ],
+#             link_args           : [link_args, '-Wl,-T,@0@/@1@'.format(meson.current_source_dir(), 'Src/STLDR/linker.ld'), 
+#                                               '-Wl,-Map=@0@.map,--cref'.format('stldr'),
+#                                               '-Wl,--print-memory-usage', 
+#                                               '-Wl,--gc-sections'],
+#             dependencies        : link_deps,
+#             include_directories : [incdirs, 'Src/STLDR'] )
 
 #==============================================================================#
 # import binary objects

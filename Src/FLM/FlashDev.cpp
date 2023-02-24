@@ -22,10 +22,10 @@
 
 extern "C"
 {
-    struct FlashDevice const FlashDevice = {
+    struct FlashDevice const FlashDevice __attribute__((section("DevDscr"))) = {
         FLASH_DRV_VERS,             // Driver Version, do not modify!
         FLASH_LDR_NAME,             // Device Name (128 chars max)
-        EXTSPI,                     // Device Type
+        ONCHIP,                     // Device Type
         QSPI_BASE,                  // Base Address                                                                                                                                                                                                                                                                                                                                                      ,                 // Device Start Address
         flash_size,                 // Device Size
         pg_size,                    // Programming Page Size

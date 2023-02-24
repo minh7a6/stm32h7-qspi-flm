@@ -125,19 +125,19 @@ public:
     void init(const init_t &init_val)
     {
         RCC->AHB3ENR |= RCC_AHB3ENR_QSPIEN; // Enable QUADSPI Clk
-        QUADSPI->DCR = (QUADSPI->DCR & ~(QUADSPI_DCR_FSIZE | QUADSPI_DCR_CSHT | QUADSPI_DCR_CKMODE)) |
+        _ptr->DCR = (QUADSPI->DCR & ~(QUADSPI_DCR_FSIZE | QUADSPI_DCR_CSHT | QUADSPI_DCR_CKMODE)) |
                        ((static_cast<uint32_t>(init_val.fsize) << QUADSPI_DCR_FSIZE_Pos) |
                         (static_cast<uint32_t>(init_val.chip_sel_high_time) << QUADSPI_DCR_CSHT_Pos) |
                         (static_cast<uint32_t>(init_val.ckmode) << QUADSPI_DCR_CKMODE_Pos));
-        QUADSPI->CR = (QUADSPI->CR & ~(QUADSPI_CR_PRESCALER | QUADSPI_CR_DFM | QUADSPI_CR_FTHRES)) |
+        _ptr->CR = (QUADSPI->CR & ~(QUADSPI_CR_PRESCALER | QUADSPI_CR_DFM | QUADSPI_CR_FTHRES)) |
                       ((static_cast<uint32_t>(init_val.sample_shift) << QUADSPI_CR_SSHIFT_Pos) |
                        (static_cast<uint32_t>(init_val.presc) << QUADSPI_CR_PRESCALER_Pos) |
                        (static_cast<uint32_t>(init_val.fifo_thresh) << QUADSPI_CR_FTHRES_Pos));
-        QUADSPI->CR |= QUADSPI_CR_EN;
+        _ptr->CR |= QUADSPI_CR_EN;
     }
     void deinit()
     {
-        QUADSPI->CR &= ~QUADSPI_CR_EN;
+        _ptr->CR &= ~QUADSPI_CR_EN;
         RCC->AHB3ENR &= ~RCC_AHB3ENR_QSPIEN;
     }
     error_t abort();

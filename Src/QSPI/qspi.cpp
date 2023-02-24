@@ -130,7 +130,7 @@ qspi_driver::error_t qspi_driver::write(const qspi_driver::transact_t &transacti
  * @brief transferring read
  *
  * @param transaction
- * @return qspi_driver::error_t QSPI_OK if successfull, error otherwise
+ * @return qspi_driver::error_t QSPI_OK if successful, error otherwise
  */
 qspi_driver::error_t qspi_driver::read(qspi_driver::transact_t &transaction)
 {

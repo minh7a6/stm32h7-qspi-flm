@@ -21,7 +21,7 @@ public:
 
 private:
     int enable_qio();
-    int restart_chip();
+    int restart();
     int wen();
     int poll_busy();
     static constexpr uint32_t size = 0x800000;

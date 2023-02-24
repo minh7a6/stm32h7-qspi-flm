@@ -21,6 +21,8 @@ extern "C"
     int Init(void)
     {
         SystemInit();
+        SCB_InvalidateICache();
+        SCB_InvalidateDCache();
         SCB_EnableICache();
         SCB_EnableDCache();
         // constexpr auto watchdog_init = watchdog::get_init(5000);
