@@ -25,25 +25,6 @@
 extern "C"
 {
 #endif
-    struct SEGGER_OFL_API
-    {
-        //
-        // Optional functions may be be NULL
-        //
-        void (*pfFeedWatchdog)(void);                                                                  // Optional
-        int (*pfInit)(uint32_t Addr, uint32_t Freq, uint32_t Func);                                    // Mandatory
-        int (*pfUnInit)(uint32_t Func);                                                                // Mandatory
-        int (*pfEraseSector)(uint32_t Addr);                                                           // Mandatory
-        int (*pfProgramPage)(uint32_t Addr, uint32_t NumBytes, uint8_t *pSrcBuff);                     // Mandatory
-        int (*pfBlankCheck)(uint32_t Addr, uint32_t NumBytes, uint8_t BlankData);                      // Optional
-        int (*pfEraseChip)(void);                                                                      // Optional
-        uint32_t (*pfVerify)(uint32_t Addr, uint32_t NumBytes, uint8_t *pSrcBuff);                     // Optional
-        uint32_t (*pfSEGGERCalcCRC)(uint32_t CRC, uint32_t Addr, uint32_t NumBytes, uint32_t Polynom); // Optional
-        int (*pfSEGGERRead)(uint32_t Addr, uint32_t NumBytes, uint8_t *pDestBuff);                     // Optional
-        int (*pfSEGGERProgram)(uint32_t DestAddr, uint32_t NumBytes, uint8_t *pSrcBuff);               // Optional
-        int (*pfSEGGERErase)(uint32_t SectorAddr, uint32_t SectorIndex, uint32_t NumSectors);          // Optional
-        void (*pfSEGGERStart)(volatile struct SEGGER_OPEN_CMD_INFO *pInfo);                            // Optional
-    };
     /** Initialize programming functions
         @param adr device base address
         @param clk clock frequency (Hz)
@@ -92,10 +73,6 @@ extern "C"
         @return 0 on success, an error code otherwise
      */
     uint32_t Verify(uint32_t adr, uint32_t sz, uint8_t *buf);
-
-    int SEGGER_OPEN_Read(uint32_t Addr, uint32_t NumBytes, uint8_t *pDestBuff);            // Optional
-    int SEGGER_OPEN_Program(uint32_t DestAddr, uint32_t NumBytes, uint8_t *pSrcBuff);      // Optional
-    int SEGGER_OPEN_Erase(uint32_t SectorAddr, uint32_t SectorIndex, uint32_t NumSectors); // Optional
 
 #ifdef __cplusplus
 }

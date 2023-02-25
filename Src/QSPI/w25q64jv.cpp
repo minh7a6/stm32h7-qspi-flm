@@ -8,7 +8,7 @@
  */
 int w25q64jv::mmap()
 {
-    qspi_driver::memmap_t memmap_cmd = {
+    const qspi_driver::memmap_t memmap_cmd = {
         {
             {qspi_driver::QSPI_1_LINE, quad_out_fast_read},               // instruction
             {qspi_driver::QSPI_4_LINE, qspi_driver::L24B, 0},             // address
@@ -107,7 +107,7 @@ int w25q64jv::read(void *dest, const uint32_t size, void *buff)
     return 0;
 }
 
-int w25q64jv::verify(void *dest, const uint32_t size, void *src)
+uint32_t w25q64jv::verify(void *dest, const uint32_t size, void *src)
 {
     /* create buffer enough for a page */
     std::array<uint8_t, get_pg()> buffer;
@@ -123,18 +123,18 @@ int w25q64jv::verify(void *dest, const uint32_t size, void *src)
         int res = read(dest, read_sz, buffer.data());
         if (res != qspi_driver::QSPI_OK)
         {
-            return res;
+            return 0;
         }
         for (std::size_t i = 0; i < read_sz; i++)
         {
             if (srcAddr[i + sz] != buffer[i])
             {
-                return 1;
+                return sz;
             }
         }
         sz += read_sz;
     }
-    return 0;
+    return sz;
 }
 
 /**

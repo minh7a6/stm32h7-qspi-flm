@@ -9,7 +9,7 @@ public:
     w25q64jv(qspi_driver &drv) : QspiFlash(drv) {}
     int init();
     int program_page(void *dest, const uint32_t size, void *src);
-    int verify(void *dest, const uint32_t size, void *src);
+    uint32_t verify(void *dest, const uint32_t size, void *src);
     int blank_check(void *dest, const uint32_t size, uint8_t data);
     int erase_sector(void *adr);
     int erase_chip();

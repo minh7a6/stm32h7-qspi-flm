@@ -29,7 +29,7 @@ extern "C"
 #define VERS 1         // Interface Version 1.01
 #define NAME_MAX 128   // Max size of the routine name
 #define PAGE_MAX 65536 // Max Page Size for Programming
-#define SECTOR_NUM 4 // Max Number of Sector Items
+#define SECTOR_NUM 512 // Max Number of Sector Items
 #define SECTOR_END 0xFFFFFFFF, 0xFFFFFFFF
 
 // FlashDevice.devType interface mechanism

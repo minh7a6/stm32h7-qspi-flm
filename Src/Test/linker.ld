@@ -130,9 +130,9 @@ SECTIONS
   } >RAM_D1
 
   .qspi : {
-    . = ALIGN(4);
+    . = ALIGN(8);
     KEEP(*(external*))
-    . = ALIGN(4);
+    . = ALIGN(8);
   } >QSPI
 
   /* Remove information from the compiler libraries */

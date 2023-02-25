@@ -9,7 +9,7 @@ protected:
 
 public:
     virtual int program_page(void *dest, uint32_t size, void *src) { return 1; }
-    virtual int verify(void *dest, uint32_t size, void *src) { return 1; }
+    virtual uint32_t verify(void *dest, uint32_t size, void *src) { return 0; }
     virtual int blank_check(void *dest, uint32_t size, uint8_t data) { return 1; }
     virtual int erase_sector(void *adr) { return 1; }
     virtual int erase_chip() { return 1; }

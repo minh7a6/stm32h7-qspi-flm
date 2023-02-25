@@ -1,72 +1,49 @@
 #include "Config.hpp"
 #include <array>
 #include "Board.hpp"
-
 extern "C"
 {
     int main();
 }
-
-__attribute__((section("external")))
-int do_some_math(int a, int b) {
-    return a % b;
+__attribute__((section("external"))) int do_math(int a, int b)
+{
+    return a + b;
 }
+__attribute__((aligned(32)))
+int a = 0;
 int main()
 {
+    SystemInit();
     SCB_InvalidateICache();
     SCB_InvalidateDCache();
     SCB_EnableICache();
     SCB_EnableDCache();
-    Board::gpio_init();
     qspi_driver drv(QUADSPI);
-    // get drv ref
     FLASH_CLASS flash(drv);
+    drv.deinit();
+    Board::gpio_deinit();
+    Board::gpio_init();
     drv.init(qspi_init);
-    flash.init();
-    std::array<uint8_t, 256> wr_buff;
-    // Pad data with 0 .. size
-    for (std::size_t i = 0; i < wr_buff.size(); i++)
-    {
-        wr_buff[i] = i;
-    }
-    uint8_t *addr = reinterpret_cast<uint8_t *>(3 * flash.get_sect_size());
-    // Erase sector
-    auto res1 = flash.erase_sector(addr);
-    if (res1 != 0)
+    int res = flash.init();
+    if (res != 0)
     {
         while (1)
             ;
     }
-    // Check for blank
-    auto res2 = flash.blank_check(addr, wr_buff.size(), 0xff);
-    if (res2 != 0)
+    // watchdog::refresh();
+    if (flash.mmap() != 0)
     {
         while (1)
             ;
     }
-    // Program the page
-    auto res3 = flash.program_page(addr, wr_buff.size(), wr_buff.data());
-    if (res3 != 0)
-    {
-        while (1)
-            ;
-    }
-    // Verify
-    auto res4 = flash.mmap();
-    if (res4 != 0)
-    {
-        while (1)
-            ;
-    }
-    int math = do_some_math(6, 3);
-    if (math !=0) {
-        while (1)
-            ;
-    }
-    while (true)
-    {
 
+    SCB_InvalidateDCache_by_Addr(&a, sizeof(a));
+    a = do_math(6, 3);
+    __DSB();
+    while (a != (6 + 3))
+        ;
+    while (1)
+    {
         __NOP();
     }
-    return 0;
 }

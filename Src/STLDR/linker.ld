@@ -24,7 +24,7 @@ MEMORY
 /* Define output sections */
 SECTIONS
 {
-  .info :
+  .info (NOLOAD):
   {
     KEEP(*Dev_Inf.cpp.o ( .rodata* ))
   } >RAM_INFO

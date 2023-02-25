@@ -486,7 +486,7 @@ void Reset_Handler()
     // __libc_init_array();
 
     /* Call the application's entry point */
-    __asm(" b main");
+    __asm("b main");
     // main();
 }
 
