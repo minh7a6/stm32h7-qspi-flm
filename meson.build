@@ -24,8 +24,8 @@ link_deps     = []
 c_args_plus     += '-DSTM32H750xx' # MCU define
 cpp_args_plus   += '-DSTM32H750xx' # MCU define
 
-c_args_plus     += '-DW25Q64JV' # MCU define
-cpp_args_plus   += '-DW25Q64JV' # MCU define
+c_args_plus     += '-DW25Q64JV' # Flash define
+cpp_args_plus   += '-DW25Q64JV' # Flash define
 #==============================================================================#
 # convenience function : get correct -mcpu flag depending on hostmachine
 cpu = host_machine.cpu() == 'cortex-m0+' ? 'cortex-m0plus' : host_machine.cpu()
@@ -46,11 +46,6 @@ link_args += cpu_args
 arch       = (host_machine.cpu() == 'cortex-m0') or (host_machine.cpu() == 'cortex-m0+') or (host_machine.cpu() == 'cortex-m0+') or (host_machine.cpu() == 'cortex-m1') ? 'armv6-m'  : ''
 arch      += (host_machine.cpu() == 'cortex-m3') ?                                                                                'armv7-m'  : ''
 arch      += (host_machine.cpu() == 'cortex-m4') or (host_machine.cpu() == 'cortex-m7') ?                                         'armv7e-m' : ''
-
-#==============================================================================#
-# convenience function : use correct Floating Point option
-
-
 #==============================================================================#
 # create Debug Flags, depending on meson buildtype
 c_args_plus += get_option('buildtype') == 'release' ? '-DNDEBUG' : '-DDEBUG'
@@ -67,7 +62,6 @@ main = executable(
             cpp_args            : [cpp_args_plus ],
             link_args           : [link_args,'-Wl,-T,@0@/@1@'.format(meson.current_source_dir(), 'Src/Test/linker.ld'), 
                                               '-Wl,-Map=@0@.map,--cref'.format('main'),
-                                              '-Wl,--print-memory-usage', 
                                               '-Wl,--gc-sections'],
             dependencies        : link_deps,
             include_directories : [incdirs] )
@@ -80,9 +74,10 @@ flm = executable(
             name_suffix         : 'flm',
             c_args              : [c_args_plus,flm_related_flag],
             cpp_args            : [cpp_args_plus,  flm_related_flag],
-            link_args           : [link_args, flm_related_flag, '-nostartfiles', '-Wl,-T,@0@/@1@'.format(meson.current_source_dir(), 'Src/FLM/linker.ld'), 
+            link_args           : [link_args, flm_related_flag, 
+                                              '-nostartfiles', 
+                                              '-Wl,-T,@0@/@1@'.format(meson.current_source_dir(), 'Src/FLM/linker.ld'), 
                                               '-Wl,-Map=@0@.map,--cref'.format('flm'),
-                                              '-Wl,--print-memory-usage', 
                                               '-Wl,--gc-sections'],
             dependencies        : link_deps,
             include_directories : [incdirs, 'Src/FLM'] )
@@ -96,7 +91,6 @@ stldr = executable(
             cpp_args            : [cpp_args_plus ],
             link_args           : [link_args, '-Wl,-T,@0@/@1@'.format(meson.current_source_dir(), 'Src/STLDR/linker.ld'), 
                                               '-Wl,-Map=@0@.map,--cref'.format('stldr'),
-                                              '-Wl,--print-memory-usage', 
                                               '-Wl,--gc-sections'],
             dependencies        : link_deps,
             include_directories : [incdirs, 'Src/STLDR'] )

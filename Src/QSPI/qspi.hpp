@@ -159,6 +159,14 @@ public:
         value |= value >> 16;
         return static_cast<uint8_t>(tab32[(uint32_t)(value * 0x07C4ACDD) >> 27] - 1);
     }
+    static constexpr uint8_t get_presc(uint32_t board_clk, uint32_t flash_clk)
+    {
+        auto pres = static_cast<float>(board_clk)/static_cast<float>(flash_clk) - 1;
+        return (static_cast<float>(static_cast<int32_t>(pres)) == pres)
+        ? static_cast<int32_t>(pres)
+        : static_cast<int32_t>(pres) + ((pres > 0) ? 1 : 0);
+    }
+
     qspi_driver(QUADSPI_TypeDef *ptr) : _ptr(ptr) {}
 
 private:

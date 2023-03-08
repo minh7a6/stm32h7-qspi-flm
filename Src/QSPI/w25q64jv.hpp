@@ -18,7 +18,7 @@ public:
     static constexpr uint32_t get_size() { return size; }
     static constexpr uint32_t get_pg() { return pg_size; }
     static constexpr uint32_t get_sect_size() { return sector_size; }
-
+    static constexpr uint32_t get_max_clk() { return clk; }
 private:
     int enable_qio();
     int restart();
@@ -28,6 +28,7 @@ private:
     static constexpr uint32_t pg_size = 0x100;
     static constexpr uint32_t sector_size = 0x00010000;
     static constexpr uint8_t alternate_byte = 0xf0;
+    static constexpr uint32_t clk = 120000000UL;
     enum cmd
     {
         write_enable = 0x06,

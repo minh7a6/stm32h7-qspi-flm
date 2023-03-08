@@ -25,7 +25,7 @@ extern "C"
         SCB_InvalidateDCache();
         SCB_EnableICache();
         SCB_EnableDCache();
-        // constexpr auto watchdog_init = watchdog::get_init(5000);
+        Board::rcc_config();
         qspi_driver drv(QUADSPI);
         FLASH_CLASS flash(drv);
         drv.deinit();
@@ -37,7 +37,6 @@ extern "C"
         {
             return LOADER_FAIL;
         }
-        // watchdog::refresh();
         if (flash.mmap() != 0)
         {
             return LOADER_FAIL;

@@ -23,8 +23,6 @@
 #include "watchdog.hpp"
 constexpr uint32_t flashOK = 0;
 constexpr uint32_t flashFail = 1;
-constexpr uint32_t timeoutMS = 25000;
-
 enum operation
 {
   ERASE = 1,
@@ -35,12 +33,7 @@ enum operation
 volatile uint32_t dummydata __attribute__((section("PrgDataBss")));
 extern "C"
 {
-  // /* start address for the .bss section. defined in linker script */
-  // extern uint32_t _sbss;
-  // /* end address for the .bss section. defined in linker script */
-  // extern uint32_t _ebss;
   void SystemInit(void);
-  void __libc_init_array();
 }
 int Init(uint32_t adr, uint32_t clk, uint32_t fnc)
 {
@@ -50,24 +43,13 @@ int Init(uint32_t adr, uint32_t clk, uint32_t fnc)
   //  but currently isnt used in MSC programming routines
   (void)adr;
   (void)clk;
-  // (void)fnc;
-  // *(uint32_t *)0xe000edf0=0xa05f0000; // enable irq in debug
-  // __asm("    ldr     r0, =_sbss\n"
-  //       "    ldr     r1, =_ebss\n"
-  //       "    mov     r2, #0\n"
-  //       "    .thumb_func\n"
-  //       "zero_loop:\n"
-  //       "        cmp     r0, r1\n"
-  //       "        it      lt\n"
-  //       "        strlt   r2, [r0], #4\n"
-  //       "        blt     zero_loop");
   SystemInit();
 
   SCB_InvalidateICache();
   SCB_InvalidateDCache();
   SCB_EnableICache();
   SCB_EnableDCache();
-  // __libc_init_array();
+  Board::rcc_config();
   __disable_irq();
   qspi_driver drv(QUADSPI);
   FLASH_CLASS flash(drv);
@@ -169,15 +151,6 @@ int ProgramPage(uint32_t adr, uint32_t sz, uint8_t *buf)
   adr -= QSPI_BASE;
   qspi_driver drv(QUADSPI);
   FLASH_CLASS flash(drv);
-  // drv.deinit();
-  // Board::gpio_deinit();
-  // Board::gpio_init();
-  // drv.init(qspi_init);
-  // int res = flash.init();
-  // if (res != 0)
-  // {
-  //   return flashFail;
-  // }
   const auto destAddr = reinterpret_cast<void *>(adr);
   if (flash.program_page(destAddr, sz * sizeof(*buf), buf) != 0)
   {

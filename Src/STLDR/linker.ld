@@ -24,9 +24,9 @@ MEMORY
 /* Define output sections */
 SECTIONS
 {
-  .info (NOLOAD):
+  .info :
   {
-    KEEP(*Dev_Inf.cpp.o ( .rodata* ))
+    KEEP(*(DevDscr))
   } >RAM_INFO
 
   /* The program code and other data goes into IMAGE */

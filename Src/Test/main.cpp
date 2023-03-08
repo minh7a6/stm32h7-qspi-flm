@@ -9,8 +9,7 @@ __attribute__((section("external"))) int do_math(int a, int b)
 {
     return a + b;
 }
-__attribute__((aligned(32)))
-int a = 0;
+
 int main()
 {
     SystemInit();
@@ -30,18 +29,11 @@ int main()
         while (1)
             ;
     }
-    // watchdog::refresh();
     if (flash.mmap() != 0)
     {
         while (1)
             ;
     }
-
-    SCB_InvalidateDCache_by_Addr(&a, sizeof(a));
-    a = do_math(6, 3);
-    __DSB();
-    while (a != (6 + 3))
-        ;
     while (1)
     {
         __NOP();
