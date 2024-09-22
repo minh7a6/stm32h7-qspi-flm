@@ -11,7 +11,7 @@ fpu_arch      = 'none' # FPU technology
 # flash driver name for stldr and flm
 flash_driver_name = '-DFLASH_LDR_NAME="w25q64jv_STM32H7x3"'
 # common source file
-srcs          = ['Src/QSPI/qspi.cpp', 'Src/QSPI/w25q64jv.cpp', 'Src/Test/sysmem.c', 'Src/Config/SystemInit.c']
+srcs          = ['Src/QSPI/qspi.cpp',  'Src/Test/sysmem.c', 'Src/Config/SystemInit.c']
 # common inclusion
 incdirs       = ['Src/Config','Src/QSPI', 'cmsis_device_h7/Include', 'CMSIS_5/CMSIS/Core/Include']
 c_args_plus   = [flash_driver_name]
