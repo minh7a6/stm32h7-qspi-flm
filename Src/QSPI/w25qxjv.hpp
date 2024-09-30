@@ -105,7 +105,7 @@ public:
         return 0;
     }
 
-    int erase_sector(void *dest)
+    int erase_sector(void *adr)
     {
         // Enable write
         int res = wen();
@@ -113,7 +113,7 @@ public:
         {
             return res;
         }
-        uint32_t addr = reinterpret_cast<uint32_t>(dest);
+        uint32_t addr = reinterpret_cast<uint32_t>(adr);
         const qspi_driver::transact_t erase_cmd = {
             {
                 {qspi_driver::QSPI_1_LINE, sector_erase},            // instruction
@@ -365,9 +365,15 @@ class w25q64jv final : public w25qxjv<0x800000> {
 public:
     w25q64jv(qspi_driver &drv) : w25qxjv<0x800000>(drv) {}
 };
+
 class w25q32jv final : public w25qxjv<0x400000> {
 public:
     w25q32jv(qspi_driver &drv) : w25qxjv<0x400000>(drv) {}
+};
+
+class w25q16jv final : public w25qxjv<0x200000> {
+public:
+    w25q16jv(qspi_driver &drv) : w25qxjv<0x200000>(drv) {}
 };
 
 #endif

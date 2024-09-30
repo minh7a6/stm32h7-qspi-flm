@@ -2,11 +2,18 @@
 #define __CONFIG_HPP
 
 #include "w25qxjv.hpp"
+#include "Board.hpp"
+#if defined(W25Q64JV) || defined(W25Q32JV) || defined(W25Q16JV)
 
 #if defined(W25Q64JV)
-
-#include "Board.hpp"
 using FLASH_CLASS = w25q64jv;
+#endif
+#if defined(W25Q32JV)
+using FLASH_CLASS = w25q32jv;
+#endif
+#if defined(W25Q16JV)
+using FLASH_CLASS = w25q16jv;
+#endif
 // AHB3 is 200MHz max, with 400MHz, it is divided by 2
 constexpr auto presc = qspi_driver::get_presc(Board::get_clk() / 2, FLASH_CLASS::get_max_clk());
 constexpr uint32_t flash_size = FLASH_CLASS::get_size();
