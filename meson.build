@@ -5,11 +5,14 @@ project('stm32h7-flm', 'c', 'cpp',
                              'cpp_std=c++20'])
 
 #==============================================================================#
+
+flash_name = 'W25Q64JV'
+flash_driver_name = '-DFLASH_LDR_NAME="@0@_STM32H7x3"'.format(flash_name)
 # Initialize some globals
 fpu           = 'soft' # FPU usage
 fpu_arch      = 'none' # FPU technology
 # flash driver name for stldr and flm
-flash_driver_name = '-DFLASH_LDR_NAME="w25q64jv_STM32H7x3"'
+
 # common source file
 srcs          = ['Src/QSPI/qspi.cpp',  'Src/Test/sysmem.c', 'Src/Config/SystemInit.c']
 # common inclusion
@@ -24,8 +27,10 @@ link_deps     = []
 c_args_plus     += '-DSTM32H750xx' # MCU define
 cpp_args_plus   += '-DSTM32H750xx' # MCU define
 
-c_args_plus     += '-DW25Q64JV' # Flash define
-cpp_args_plus   += '-DW25Q64JV' # Flash define
+c_args_plus     += '-D@0@'.format(flash_name) # Flash define
+cpp_args_plus   += '-D@0@'.format(flash_name) # Flash define
+
+
 #==============================================================================#
 # convenience function : get correct -mcpu flag depending on hostmachine
 cpu = host_machine.cpu() == 'cortex-m0+' ? 'cortex-m0plus' : host_machine.cpu()
