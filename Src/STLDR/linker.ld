@@ -114,6 +114,7 @@ SECTIONS
     *(.bss*)
     *(COMMON)
     . = ALIGN(4);
+    end = .;
   } >RAM_PROG
 
   /* Remove information from the standard libraries */

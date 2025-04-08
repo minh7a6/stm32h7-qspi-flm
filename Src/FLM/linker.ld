@@ -85,6 +85,7 @@ SECTIONS
       PROVIDE ( _end = . );
       . = . + _Min_Stack_Size;
       . = ALIGN(4);
+      end = .;
     } : Loader
     /DISCARD/ : {
         /* Unused exception related info that only wastes space */

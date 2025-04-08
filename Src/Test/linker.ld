@@ -127,6 +127,7 @@ SECTIONS
     . = . + _Min_Heap_Size;
     . = . + _Min_Stack_Size;
     . = ALIGN(8);
+    end = .;
   } >RAM_D1
 
   .qspi : {

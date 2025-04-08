@@ -7,6 +7,7 @@ project('stm32h7-flm', 'c', 'cpp',
 #==============================================================================#
 
 flash_name = 'W25Q64JV'
+file_name = '@0@_STM32H7x3'.format(flash_name)
 flash_driver_name = '-DFLASH_LDR_NAME="@0@_STM32H7x3"'.format(flash_name)
 # Initialize some globals
 fpu           = 'soft' # FPU usage
@@ -60,7 +61,7 @@ cpp_args_plus += get_option('buildtype') == 'release' ? '-DNDEBUG' : '-DDEBUG'
 # parse linkerfiles to a linker commando
 #==============================================================================#
 main = executable(
-            'main',
+            '@0@'.format(file_name),
             [srcs, 'Src/Test/main.cpp', 'Src/Test/startup.c'],
             name_suffix         : 'elf',
             c_args              : [c_args_plus ],
@@ -74,7 +75,7 @@ main = executable(
 
 flm_related_flag = ['-fpic', '-msingle-pic-base', '-mpic-register=9' ,'-fno-jump-tables']
 flm = executable(
-            'ext_loader_flm',
+            '@0@'.format(file_name),
             [srcs, 'Src/FLM/FlashDev.cpp', 'Src/FLM/FlashPrg.cpp'] ,
             name_suffix         : 'flm',
             c_args              : [c_args_plus,flm_related_flag],
@@ -89,7 +90,7 @@ flm = executable(
 
 
 stldr = executable(
-            'ext_loader_stldr',
+            '@0@'.format(file_name),
             [srcs, 'Src/STLDR/Loader_Src.cpp', 'Src/STLDR/Dev_Inf.cpp'] ,
             name_suffix         : 'stldr',
             c_args              : [c_args_plus ],
@@ -105,7 +106,7 @@ stldr = executable(
 objcopy  = '@0@'.format(find_program('objcopy').path())
 objdump  = '@0@'.format(find_program('objdump').path())
 size     = '@0@'.format(find_program('size').path())
-gdb      = '@0@'.format(find_program('gdb').path())
+# gdb      = '@0@'.format(find_program('gdb').path())
 # terminal = '@0@'.format(find_program('terminal',required:false).path())
 # openocd  = '@0@'.format(find_program('openocd', required:false).path())
 
@@ -116,14 +117,14 @@ mainbin = custom_target(
     output           : ['main.bin'],
     # name_suffix      : 'bin',
     build_by_default : true,
-    command          : [objcopy, '-O', 'binary', 'main.elf', 'main.bin'],
+    command          : [objcopy, '-O', 'binary', main, 'main.bin'],
     depends          : [main])
 
 mainhex = custom_target(
                             'main.hex',
         output           : ['main.hex'],
         build_by_default : true,
-        command          : [objcopy, '-O', 'ihex', 'main.elf', 'main.hex'],
+        command          : [objcopy, '-O', 'ihex', main, 'main.hex'],
         depends          : [main])
 
 mainsize = custom_target(
@@ -131,5 +132,5 @@ mainsize = custom_target(
         capture          : true,
         output           : ['main.size'],
         build_by_default : true,
-        command          : [size, '--format=berkeley', 'main.elf'],
+        command          : [size, '--format=berkeley', main],
         depends          : [main])
