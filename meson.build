@@ -6,7 +6,7 @@ project('stm32h7-flm', 'c', 'cpp',
 
 #==============================================================================#
 
-flash_name = 'W25Q64JV'
+flash_name = get_option('FLASH_NAME')
 file_name = '@0@_STM32H7x3'.format(flash_name)
 flash_driver_name = '-DFLASH_LDR_NAME="@0@_STM32H7x3"'.format(flash_name)
 # Initialize some globals

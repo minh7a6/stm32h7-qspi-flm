@@ -1,0 +1,2 @@
+CompileFlags:
+    CompilationDatabase: ./builddir/ # Relative path to compile_commands.json

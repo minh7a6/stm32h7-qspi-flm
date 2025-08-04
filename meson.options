@@ -1,0 +1,1 @@
+option('FLASH_NAME', type : 'string', value : 'W25Q64JV', description : 'QSPI Flash Name')
